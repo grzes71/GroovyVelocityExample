@@ -9,13 +9,23 @@ import org.apache.velocity.Template
 import org.apache.velocity.app.VelocityEngine
 
 /**
- * App class
+ * Example application class
  */
 class App {
 
-    void exercise(String templateDir, String templateName) {
+    static void main(String[] args) {
+        if (args.length == 2) {
+            new App().processTemplate(args[0], args[1])
+        } else {
+            println("Error: $args.length arguments provided")
+        }
+    }
 
-        /* lets make a Context and put data into it */
+    /**
+     * Process the template
+     */
+    void processTemplate(String templateDir, String templateName) {
+        /* Lets make a Context and put data into it */
         VelocityContext context = new VelocityContext()
         context.put('name', 'Velocity')
         context.put('project', 'Jakarta')
@@ -23,27 +33,20 @@ class App {
         /* Create an engine */
         VelocityEngine engine = new VelocityEngine()
         Properties props = new Properties()
-        props.setProperty("file.resource.loader.path", templateDir)
+        props.setProperty('file.resource.loader.path', templateDir)
         engine.init(props)
 
         /* Render a template */
-        StringWriter w = new StringWriter()
+        StringWriter writer = new StringWriter()
         Template template = engine.getTemplate(templateName)
-        template.merge(context, w)
-        println(' template : ' + w)
+        template.merge(context, writer)
+        println("Template : $writer")
 
-        /* lets make our own string to render */
-        String s = 'We are using $project $name to render this.'
-        w = new StringWriter()
-        engine.evaluate(context, w, 'mystring', s)
-        println(' string : ' + w)
+        /* Lets make a string to render */
+        String someString = 'We are using $project $name to render this.'
+        writer = new StringWriter()
+        engine.evaluate(context, writer, 'mystring', someString)
+        println("String : $writer")
     }
 
-    static void main(String[] args) {
-        if (args.length == 2) {
-            new App().exercise(args[0], args[1])
-        } else {
-            println("Error: $args.length arguments provided")
-        }
-    }
 }
