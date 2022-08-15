@@ -9,7 +9,11 @@
 2. To run with Java execute:
 
         java -jar ./app/build/libs/app-all.jar $PWD testtemplate.vm
-       
+
+> **_NOTE:_**  To be able to run gradle make sure to enable SDK:
+
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+
 **See also**:
 
 - https://sdkman.io/install
